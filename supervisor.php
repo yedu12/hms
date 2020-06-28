@@ -109,7 +109,7 @@
             <div class="panel-heading">Logout</div>
             <div class="panel-body">
                 <h3>
-                    <a href="#">Click here to logout</a>
+                <a href="logout.php">Click here to logout</a>
                 </h3>
             </div>
         </div>

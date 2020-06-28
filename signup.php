@@ -1,11 +1,12 @@
 <?php include('header.php');?>
 <?php 
-    if($_POST['id']){
-        $servername = "localhost";
-        $username = "root";
+$servername = "localhost";
+$username = "root";
 
-        // Create connection
-        $conn = new mysqli($servername, $username, '','hms');
+// Create connection
+$conn = new mysqli($servername, $username, '','hms');
+    if($_POST['id']){
+
         // Check connection
         if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -13,13 +14,18 @@
         $status = '';
         $sql = "insert into users values('$_POST[name]','$_POST[id]','$_POST[phone]','$_POST[password]','$_POST[who]')";
         if ($conn->query($sql) === TRUE) {
+            $sql2 = "insert into allocation values('$_POST[id]','$_POST[room]')";
+            $conn-> query($sql2);
         $status =  "Sucessfully registered!! Go to login page <a href='login.php'>here</a>";
         } else {
             $status=  "Error inserting data: " . $conn->error;
         }
 
-        $conn->close();
+        
     }
+$sql  = "select * from room";
+$rooms = $conn->query($sql);
+$conn->close();
 ?>
     <div class="container" id='nav-below-nody' >
         <div class="row" >
@@ -62,6 +68,15 @@
                         <input name="who"  type="radio" id="who" value="1" required> Supervisor
                         <input name="who"  type="radio" id="who" value="2" required> Warden
                         <input name="who"  type="radio" id="who" value="3" required> Student
+                </div>
+                <div id="room"> 
+                        <label>Room</label>
+                        <select name='room'>
+                            <option value = '' >Select</option>
+                            <?php while($row = $rooms->fetch_assoc()){?>
+                            <option value='<?php echo $row['id']; ?>'><?php echo $row['id']; ?></option>
+                            <?php }?>
+                        </select>
                 </div>
                 <div>
                     <input name="submit" value="Submit" type="submit" >

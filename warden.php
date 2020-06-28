@@ -38,6 +38,9 @@
     $query5 = "select * from events";
     $events = $conn->query($query5) ;
 
+    $query6 = "select room.id,count(student_id) as count from room left join allocation on room.id = allocation.room_id group by room.id";
+    $rooms = $conn->query($query6) ;
+
     $conn->close();
 ?>
 
@@ -48,6 +51,7 @@
         <button class="tablinks" onclick="openTab(event, 'Leave approval')">Leave approval</button>
         <button class="tablinks" onclick="openTab(event, 'Updates/Announcement')" id="defaultOpen">Updates/Announcement</button>
         <button class="tablinks" onclick="openTab(event, 'Evens/Activites')">Evens/Activites</button>
+        <button class="tablinks" onclick="openTab(event, 'rooms')">Rooms</button>
         <button class="tablinks" onclick="openTab(event, 'Logout')">Logout</button>
     </div>
     
@@ -165,6 +169,35 @@
                     <?php }?>
                 </table>
                 <button  onclick="open_modal('events','new',1)" class="btn btn-primary">Add new</button>
+            </div>
+        </div>
+      </div>
+
+      <div id="rooms" class="tabcontent">
+        <div class="panel panel-success">
+            <div class="panel-heading">Rooms</div>
+            <div class="panel-body" style = 'color:black'>
+                    <table class='table table-hover'>
+                        <thead>
+                            <tr>
+                                <th>Room</th>
+                                <th>Numer of students</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php while($room = $rooms->fetch_assoc()){ ?>
+                        <tr>
+                            <td><?php echo $room['id']; ?></td>
+                            <td><?php echo $room['count']; ?></td>
+                        </tr>
+                        <?php }?>
+                        </tbody>
+                    </table>
+                    <div>
+                        <label>New Room</label>
+                        <input id = 'new_room'>
+                        <button onclick='add_newroom(this)'>Add</button>
+                    </div>
             </div>
         </div>
       </div>
@@ -348,6 +381,21 @@
             }
         });
         return false;
+    }
+    function add_newroom(a){
+        var data  = $('#new_room').val();
+        a.innerHTML = 'Adding.....';
+        $.ajax({
+            type: "POST",
+            url: "new_room_add.php",
+            data: { room : data},
+            success: function(data,status,xhr) {
+                alert(data);
+            },
+            error: function (xhr, status, error){
+                alert(error);
+            }
+        });
     }
     </script>
        

@@ -76,7 +76,7 @@
                 <li><a href="./facilities.php">Facilities</a></li>
                 <li><a href="./gallery.php">Gallery</a></li>
                 <li><a href="./dosdont.php">Do's & Don'ts</a></li>
-                <?php session_start(); if($_SESSION['id']) {?>
+                <?php session_start(); if( isset($_SESSION['id'])) {?>
                     <li><a href="<?php if($_SESSION['who']=='1'){ echo 'supervisor.php';} elseif($_SESSION['who']=='2'){ echo 'warden.php';} else{ echo 'student.php';} ?>"><?php echo $_SESSION['name'];} else { ?></a></li>
                 <li><a href="./login.php">Login Register</a></li> 
                     <?php };?>

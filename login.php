@@ -11,7 +11,7 @@
         die("Connection failed: " . $conn->connect_error);
         }
         $status = '';
-        $sql = "select * from users where id = '$_POST[id]'";
+        $sql = "select * from users where id = '$_POST[id]' and password = '$_POST[password]'";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -48,7 +48,7 @@
 
                             <a href="#" id="links" style="color: crimson;">Forgot password</a></p>
 
-                            <p id="Error"></p>
+                            <p id="Error"><?php echo $status;?></p>
                             
                         </form>
             </div>
